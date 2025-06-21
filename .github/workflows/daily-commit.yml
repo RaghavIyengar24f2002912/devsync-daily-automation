@@ -8,6 +8,8 @@ on:
 jobs:
   auto-commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 🔐 give permission to push
 
     steps:
       - name: Checkout repository
@@ -20,4 +22,8 @@ jobs:
           git config --local user.name "DevSync Bot"
           git add daily-log.txt
           git commit -m "Daily auto-update [skip ci]" || echo "Nothing to commit"
-          git push
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
